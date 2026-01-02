@@ -1,0 +1,151 @@
+database_task:
+  description: >
+    Based on the technical specification, implement a complete, production-ready database layer.
+
+    TECHNICAL SPECIFICATION:
+    {plan}
+
+    REQUIREMENTS:
+    
+    1. Analyze the specification to identify all entities, relationships, and data requirements.
+    
+    2. Create a complete SQL schema with:
+       - All necessary tables with appropriate column types
+       - Primary keys, foreign keys, and constraints
+       - Indexes for performance optimization
+       - Clear comments explaining the schema design
+    
+    3. Create Python ORM models that:
+       - Map to the SQL schema exactly
+       - Include all relationships and associations
+       - Have proper type hints and validation
+       - Are production-ready with proper imports
+    
+    4. Create a database configuration module for:
+       - Connection management
+       - Session handling
+       - Engine configuration
+    
+    5. CRITICAL: Generate a requirements.txt file listing ALL Python packages 
+       needed to run the database code. Analyze your code and include every 
+       import dependency with appropriate version constraints.
+
+    The output must be complete and runnable without any missing dependencies.
+
+  expected_output: >
+    Complete, self-contained database implementation with:
+    - SQL schema file with all tables and relationships
+    - Python ORM models with full type hints
+    - Database configuration module
+    - requirements.txt with ALL necessary Python dependencies
+    - The code must be production-ready and runnable as-is
+  agent: database_engineer
+
+backend_task:
+  description: >
+    Based on the technical specification and database context, implement a complete, 
+    production-ready backend API.
+
+    TECHNICAL SPECIFICATION:
+    {plan}
+
+    DATABASE CONTEXT:
+    Reference the database models from the previous task when building your API.
+
+    REQUIREMENTS:
+
+    1. Analyze the specification to identify all API endpoints, authentication needs,
+       and business logic requirements.
+
+    2. Create a complete API application with:
+       - Main application entry point with proper configuration
+       - All necessary routes and endpoints
+       - Request/response data models with validation
+       - Proper error handling and HTTP status codes
+       - CORS configuration for frontend integration
+
+    3. Implement authentication if required:
+       - Secure password handling
+       - Token-based authentication
+       - Protected route mechanisms
+
+    4. Create proper project structure:
+       - Organize code into logical modules
+       - Separate concerns (routes, schemas, services, auth)
+       - Include configuration management
+
+    5. CRITICAL: Generate a requirements.txt file by analyzing ALL imports in your code.
+       Include every package needed to run the backend with appropriate versions.
+       Don't forget runtime dependencies like the web server.
+
+    6. Create an environment configuration template (.env.example) with all 
+       required environment variables documented.
+
+    The output must be complete and runnable with a single command after installing dependencies.
+
+  expected_output: >
+    Complete, self-contained backend implementation with:
+    - Main application file ready to run
+    - All route handlers and endpoints
+    - Data validation schemas
+    - Authentication system (if needed)
+    - requirements.txt with ALL Python dependencies
+    - .env.example with all configuration variables
+    - The code must be production-ready and runnable as-is
+  agent: backend_engineer
+
+frontend_task:
+  description: >
+    Based on the technical specification and backend API context, implement a complete,
+    production-ready frontend application.
+
+    TECHNICAL SPECIFICATION:
+    {plan}
+
+    BACKEND CONTEXT:
+    Reference the API endpoints from the previous task when building your frontend.
+
+    REQUIREMENTS:
+
+    1. Analyze the specification to identify all pages, components, and user interactions.
+
+    2. Create a complete frontend application with:
+       - Modern React components with TypeScript
+       - Proper routing for all pages
+       - State management appropriate for the complexity
+       - Responsive and accessible UI design
+
+    3. Implement API integration:
+       - API client configured for the backend
+       - Type-safe API calls
+       - Proper error handling and loading states
+       - Authentication token management (if needed)
+
+    4. CRITICAL: Generate a complete package.json with:
+       - Project name and configuration
+       - ALL npm dependencies needed to run the app
+       - ALL dev dependencies for building
+       - Scripts for development, building, and running
+       Analyze your imports and ensure every package is included.
+
+    5. Generate all necessary configuration files:
+       - Build tool configuration (Vite, Webpack, etc.)
+       - TypeScript configuration
+       - CSS framework configuration (if used)
+       - Any other tooling configs your code requires
+
+    6. Create the HTML entry point with proper structure.
+
+    The output must be complete and runnable with standard npm commands 
+    (npm install && npm run dev).
+
+  expected_output: >
+    Complete, self-contained frontend implementation with:
+    - All React components with TypeScript
+    - API integration layer
+    - Routing and navigation
+    - package.json with ALL dependencies and scripts
+    - All configuration files (tsconfig, build config, etc.)
+    - index.html entry point
+    - The code must be production-ready and runnable as-is
+  agent: frontend_engineer

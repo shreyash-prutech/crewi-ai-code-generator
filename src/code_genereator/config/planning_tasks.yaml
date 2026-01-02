@@ -1,0 +1,49 @@
+planning_task:
+  description: >
+    Analyze the following software requirement and create a comprehensive technical specification:
+    
+    REQUIREMENT:
+    {requirement}
+    
+    Your specification MUST include:
+    
+    1. PROJECT OVERVIEW
+       - Project name and description
+       - Core features and scope
+       - Technology stack recommendations
+    
+    2. DATABASE DESIGN
+       - Entity definitions with fields and types
+       - Relationships between entities
+       - Indexes and constraints
+       - Sample table names following naming conventions
+    
+    3. API DESIGN
+       - RESTful endpoints with HTTP methods
+       - Request/Response schemas
+       - Authentication requirements
+       - Error handling patterns
+    
+    4. FRONTEND DESIGN
+       - Page/Component structure
+       - State management approach
+       - API integration points
+       - UI/UX considerations
+    
+    5. NAMING CONVENTIONS
+       - Database: snake_case for tables/columns
+       - Backend: PascalCase for classes, camelCase for functions
+       - Frontend: PascalCase for components, camelCase for functions
+    
+    Format your output as a structured JSON-like specification that can be parsed
+    and used by the engineering team.
+    
+  expected_output: >
+    A detailed technical specification in JSON-like format containing:
+    - Project metadata
+    - Database schema definitions
+    - API endpoint specifications
+    - Frontend component hierarchy
+    - Clear naming conventions used consistently throughout
+  agent: architect
+

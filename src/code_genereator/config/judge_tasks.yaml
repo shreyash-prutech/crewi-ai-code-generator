@@ -1,0 +1,59 @@
+validation_task:
+  description: >
+    Perform a comprehensive audit of all generated code and produce a final report.
+    
+    ORIGINAL REQUIREMENT:
+    {requirement}
+    
+    TECHNICAL PLAN:
+    {plan}
+    
+    DATABASE CODE:
+    {database_code}
+    
+    BACKEND CODE:
+    {backend_code}
+    
+    FRONTEND CODE:
+    {frontend_code}
+    
+    Your audit MUST check:
+    
+    1. NAMING CONSISTENCY
+       - Database table/column names match ORM model attributes
+       - API endpoint paths are consistent and RESTful
+       - Frontend API calls use correct endpoint paths
+       - Variable/function names follow conventions consistently
+    
+    2. INTEGRATION POINTS
+       - Frontend API calls match backend endpoint signatures
+       - Backend queries match database schema
+       - Data types are consistent across tiers
+       - Required fields are properly handled
+    
+    3. COMPLETENESS
+       - All features from the requirement are implemented
+       - All CRUD operations are available where needed
+       - Error handling is present at all tiers
+    
+    4. CODE QUALITY
+       - Code follows best practices
+       - No obvious bugs or anti-patterns
+       - Proper typing and documentation
+    
+    After the audit, use the FileWriteTool to save the code files:
+    - Save database code to: dist/database/
+    - Save backend code to: dist/backend/
+    - Save frontend code to: dist/frontend/
+    - Save the final report to: dist/REPORT.md
+    
+  expected_output: >
+    A comprehensive Markdown report containing:
+    - Executive summary of the generated software
+    - Validation results for each tier
+    - Any issues found and recommendations
+    - File structure of the saved code
+    - Instructions for running the application
+    All code files saved to the dist/ folder using FileWriteTool.
+  agent: judge
+
