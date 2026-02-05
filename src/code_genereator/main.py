@@ -21,6 +21,7 @@ from typing import Optional
 from crewai.flow.flow import Flow, listen, start
 
 from code_genereator.state import DevelopmentState
+from code_genereator.tools.deep_thinking_tool import DeepThinkingTool
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -301,6 +302,14 @@ def kickoff():
         flow = SoftwareDevFlow()
         result = flow.kickoff(inputs={"requirement": DEFAULT_REQUIREMENT.strip()})
 
+        # Execute Deep Thinking Tool
+        deep_thinking_tool = DeepThinkingTool()
+        try:
+            deep_thinking_output = deep_thinking_tool.run(memory_data={}, parameters={})
+            print(f"  - Deep Thinking: {'✅ ' + deep_thinking_output if deep_thinking_output else '❌'}")
+        except Exception as e:
+            print(f"\n Error during Deep Thinking execution: {e}")
+
         print("\n" + "=" * 60)
         print(" FINAL STATUS")
         print("=" * 60)
@@ -352,6 +361,14 @@ def run(requirement: Optional[str] = None) -> DevelopmentState:
     
     # Kickoff the flow
     final_state = flow.kickoff(inputs={"requirement": requirement.strip()})
+    
+    # Execute Deep Thinking Tool
+    deep_thinking_tool = DeepThinkingTool()
+    try:
+        deep_thinking_output = deep_thinking_tool.run(memory_data={}, parameters={})
+        print(f"  - Deep Thinking: {'✅ ' + deep_thinking_output if deep_thinking_output else '❌'}")
+    except Exception as e:
+        print(f"\n Error during Deep Thinking execution: {e}")
     
     return final_state
 
