@@ -18,6 +18,8 @@ import warnings
 from datetime import datetime
 from typing import Optional
 
+from src.code_genereator.tools.deep_thinking_tool import DeepThinkingTool
+
 from crewai.flow.flow import Flow, listen, start
 
 from code_genereator.state import DevelopmentState
@@ -352,7 +354,15 @@ def run(requirement: Optional[str] = None) -> DevelopmentState:
     
     # Kickoff the flow
     final_state = flow.kickoff(inputs={"requirement": requirement.strip()})
-    
+    # Instantiate and use DeepThinkingTool
+    deep_thinking_tool = DeepThinkingTool()
+    deep_thinking_output_path = 'dist/plans/deep_thinking_output.md'
+    deep_thinking_result = deep_thinking_tool.analyze_and_plan(requirement.strip(), deep_thinking_output_path)
+    print(deep_thinking_result)
+
+    # Optionally include deep thinking plan into final state
+    # final_state.deep_thinking_plan = deep_thinking_output_path
+
     return final_state
 
 
