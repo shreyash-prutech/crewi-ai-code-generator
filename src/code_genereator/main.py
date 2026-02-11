@@ -19,6 +19,7 @@ from datetime import datetime
 from typing import Optional
 
 from crewai.flow.flow import Flow, listen, start
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 
 from code_genereator.state import DevelopmentState
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
@@ -124,6 +125,16 @@ def save_execution_log(state: DevelopmentState, log_dir: str = "dist/logs"):
     print(f"\n📝 Execution log saved to: {log_file}")
     return log_file
 
+    @listen('init_development')
+    def run_deep_research(self) -> None:
+        """
+        Execute deep-research to create a structured Markdown report detailing a research plan.
+        """
+        research_tool = DeepResearchTool()
+        report = research_tool._run(topic='Project Development', scope='Full', depth=3)
+        self.state.deep_research_report = report
+        print(f"Deep Research Output: {report[:100]}...")
+
 
 class SoftwareDevFlow(Flow[DevelopmentState]):
     """
@@ -150,6 +161,9 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print("=" * 60)
         print(f"\nRequirement: {self.state.requirement[:100]}...")
         print("\n" + "-" * 60)
+        
+        # Run deep research before proceeding
+        self.run_deep_research()
         
         self.state.status = "initialized"
         return self.state
