@@ -19,8 +19,8 @@ from datetime import datetime
 from typing import Optional
 
 from crewai.flow.flow import Flow, listen, start
-
 from code_genereator.state import DevelopmentState
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -299,6 +299,13 @@ def kickoff():
         print("=" * 60)
 
         flow = SoftwareDevFlow()
+        deep_research = DeepResearchTool()
+        research_data = deep_research.gather_data('code generation')
+        research_analysis = deep_research.analyze_data(research_data)
+        identified_gaps = deep_research.identify_gaps(research_analysis)
+        findings = deep_research.synthesize_findings(research_analysis, identified_gaps)
+        markdown_path = 'dist/research_findings.md'
+        deep_research.generate_markdown(findings, markdown_path)
         result = flow.kickoff(inputs={"requirement": DEFAULT_REQUIREMENT.strip()})
 
         print("\n" + "=" * 60)
