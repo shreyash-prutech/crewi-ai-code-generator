@@ -13,6 +13,7 @@ The system uses three specialized crews:
 from code_genereator.state import DevelopmentState
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
 from code_genereator.main import SoftwareDevFlow, run, main, kickoff, plot
+from code_genereator.utils.validators import is_valid_email
 
 __all__ = [
     "DevelopmentState",
@@ -24,6 +25,7 @@ __all__ = [
     "main",
     "kickoff",
     "plot",
+    "is_valid_email",
 ]
 
 __version__ = "1.0.0"
