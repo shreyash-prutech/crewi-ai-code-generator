@@ -21,6 +21,7 @@ from typing import Optional
 from crewai.flow.flow import Flow, listen, start
 
 from code_genereator.state import DevelopmentState
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -136,6 +137,10 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
     """
     
     initial_state = DevelopmentState
+
+    def conduct_deep_research(self) -> str:
+        tool = DeepResearchTool()
+        return tool._run(context="initial research", requirements="essential criteria")
     
     @start()
     def init_development(self) -> DevelopmentState:
@@ -151,6 +156,7 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print(f"\nRequirement: {self.state.requirement[:100]}...")
         print("\n" + "-" * 60)
         
+        research_result = self.conduct_deep_research()
         self.state.status = "initialized"
         return self.state
     
