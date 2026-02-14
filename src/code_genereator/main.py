@@ -21,6 +21,7 @@ from typing import Optional
 from crewai.flow.flow import Flow, listen, start
 
 from code_genereator.state import DevelopmentState
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 from code_genereator.crews import PlanningCrew, EngineeringCrew, JudgeCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -174,10 +175,38 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         
         self.state.plan = str(result.raw) if hasattr(result, 'raw') else str(result)
         self.state.status = "planned"
+
+        # Run deep research phase
+        self.run_deep_research()
         
         print("\n✅ Planning complete! Technical spec generated.")
         print("-" * 60)
         
+        return self.state
+    
+    def run_deep_research(self) -> DevelopmentState:
+        """
+        Execute the Deep Research Tool to gather structured research.
+        
+        The Deep Research Tool analyzes the whole requirement and provides
+        a comprehensive research plan to inform further development stages.
+        """
+        print("\n" + "=" * 60)
+        print("PHASE 1.5: DEEP RESEARCH")
+        print("=" * 60)
+        print("Deep Researcher is gathering extensive insights...")
+
+        deep_research_tool = DeepResearchTool()
+        result = deep_research_tool.run(
+            topic=self.state.requirement,
+            current_year=datetime.now().year
+        )
+
+        self.state.research_plan = result
+        self.state.status = "researched"
+        print("\nDeep research phase complete. Findings documented.")
+        print("-" * 60)
+
         return self.state
     
     @listen(run_planning)
