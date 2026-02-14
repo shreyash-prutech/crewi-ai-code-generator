@@ -15,3 +15,11 @@ reporting_task:
     A fully fledged report with the main topics, each with a full section of information.
     Formatted as markdown without '```'
   agent: reporting_analyst
+
+deep_research_task:
+  description: >
+    Execute a structured research process using the Deep Research Tool. Gather relevant context and memories, analyze and reason over them iteratively, identify gaps or assumptions, and synthesize findings into a comprehensive Markdown research plan.
+  expected_output: >
+    A well-structured Markdown document including problem analysis, technical approach, design decisions, trade-offs, risks, and a detailed implementation roadmap.
+  agent: deep_researcher
+  tool: DeepResearchTool
