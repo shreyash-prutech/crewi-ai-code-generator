@@ -16,6 +16,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
 from code_genereator.tools.file_write_tool import FileWriteTool
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 
 # Load environment variables from .env file
 load_dotenv()
@@ -56,6 +57,29 @@ class PlanningCrew:
             max_reasoning_attempts=3,
         )
 
+    def researcher(self) -> Agent:
+        """
+        Researcher agent - performs deep research to inform planning.
+        Uses DeepResearchTool to generate structured research plans.
+        """
+        return Agent(
+            config=self.agents_config["researcher"],  # type: ignore[index]
+            verbose=True,
+            llm=LLM(model=MODEL),
+            tools=[DeepResearchTool()],
+            reasoning=True,
+            max_reasoning_attempts=3,
+        )
+
+    @task
+    def deep_research_task(self) -> Task:
+        """
+        Task to perform deep research and generate a research plan.
+        """
+        return Task(
+            config=self.tasks_config["deep_research_task"],  # type: ignore[index]
+        )
+
     @task
     def planning_task(self) -> Task:
         """
@@ -63,14 +87,15 @@ class PlanningCrew:
         """
         return Task(
             config=self.tasks_config["planning_task"],  # type: ignore[index]
+            context=[self.deep_research_task()],
         )
 
     @crew
     def crew(self) -> Crew:
         """Creates the Planning Crew"""
         return Crew(
-            agents=self.agents,
-            tasks=self.tasks,
+            agents=[self.researcher(), self.architect()],
+            tasks=[self.deep_research_task(), self.planning_task()],
             process=Process.sequential,
             verbose=True,
             planning=True,
