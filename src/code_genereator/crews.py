@@ -1,8 +1,9 @@
 """
 Specialized Crews for the Agentic Software Factory.
 
-This module defines three specialized crews:
+This module defines specialized crews:
 - PlanningCrew: Generates technical specifications
+- ResearchCrew: Performs deep research and generates research plans
 - EngineeringCrew: Implements database, backend, and frontend code
 - JudgeCrew: Validates and integrates all components
 """
@@ -68,6 +69,55 @@ class PlanningCrew:
     @crew
     def crew(self) -> Crew:
         """Creates the Planning Crew"""
+        return Crew(
+            agents=self.agents,
+            tasks=self.tasks,
+            process=Process.sequential,
+            verbose=True,
+            planning=True,
+        )
+
+
+
+# RESEARCH CREW
+
+@CrewBase
+class ResearchCrew:
+    """
+    Research Crew responsible for performing deep research and generating a research plan.
+    """
+
+    agents: List[BaseAgent]
+    tasks: List[Task]
+
+    agents_config = "config/engineering_agents.yaml"
+    tasks_config = "config/engineering_tasks.yaml"
+
+    @agent
+    def research_agent(self) -> Agent:
+        """
+        Research Agent - performs deep research and generates a research plan.
+        """
+        return Agent(
+            config=self.agents_config["research_agent"],  # type: ignore[index]
+            verbose=True,
+            llm=LLM(model=MODEL),
+            reasoning=True,
+            max_reasoning_attempts=3,
+        )
+
+    @task
+    def deep_research_task(self) -> Task:
+        """
+        Task to perform deep research and generate a research plan.
+        """
+        return Task(
+            config=self.tasks_config["deep_research_task"],  # type: ignore[index]
+        )
+
+    @crew
+    def crew(self) -> Crew:
+        """Creates the Research Crew"""
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
