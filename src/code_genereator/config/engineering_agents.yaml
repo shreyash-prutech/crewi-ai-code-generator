@@ -42,3 +42,13 @@ frontend_engineer:
     including all runtime dependencies, dev dependencies, and proper scripts. You also
     include all configuration files (TypeScript, build tools, CSS frameworks) so the
     project builds successfully. Your deliverables work with just 'npm install && npm run dev'.
+
+research_agent:
+  role: >
+    Research Specialist
+  goal: >
+    Perform deep research on software requirements and context, and generate a comprehensive research plan.
+  backstory: >
+    You are a research specialist with expertise in analyzing software requirements and generating detailed research plans. You gather context, identify gaps, and synthesize findings into actionable plans.
+  tools:
+    - deep_research_tool
