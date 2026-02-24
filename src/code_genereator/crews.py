@@ -1,8 +1,9 @@
 """
 Specialized Crews for the Agentic Software Factory.
 
-This module defines three specialized crews:
+This module defines four specialized crews:
 - PlanningCrew: Generates technical specifications
+- DeepResearchCrew: Performs deep research and produces research plans
 - EngineeringCrew: Implements database, backend, and frontend code
 - JudgeCrew: Validates and integrates all components
 """
@@ -15,6 +16,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 from code_genereator.tools.file_write_tool import FileWriteTool
 
 # Load environment variables from .env file
@@ -68,6 +70,58 @@ class PlanningCrew:
     @crew
     def crew(self) -> Crew:
         """Creates the Planning Crew"""
+        return Crew(
+            agents=self.agents,
+            tasks=self.tasks,
+            process=Process.sequential,
+            verbose=True,
+            planning=True,
+        )
+
+
+
+# DEEP RESEARCH CREW
+
+@CrewBase
+class DeepResearchCrew:
+    """
+    Deep Research Crew responsible for performing structured research.
+
+    Contains the Deep Researcher agent who gathers context, analyzes gaps,
+    and produces a comprehensive Markdown research plan.
+    """
+
+    agents: List[BaseAgent]
+    tasks: List[Task]
+
+    agents_config = "config/deep_research_agents.yaml"
+    tasks_config = "config/deep_research_tasks.yaml"
+
+    def deep_researcher(self) -> Agent:
+        """
+        Deep Researcher - performs structured research and planning.
+        """
+        return Agent(
+            config=self.agents_config["deep_researcher"],  # type: ignore[index]
+            verbose=True,
+            llm=LLM(model=MODEL),
+            tools=[DeepResearchTool()],
+            reasoning=True,
+            max_reasoning_attempts=3,
+        )
+
+    @task
+    def deep_research_task(self) -> Task:
+        """
+        Task to perform deep research and generate a Markdown research plan.
+        """
+        return Task(
+            config=self.tasks_config["deep_research_task"],  # type: ignore[index]
+        )
+
+    @crew
+    def crew(self) -> Crew:
+        """Creates the Deep Research Crew"""
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
