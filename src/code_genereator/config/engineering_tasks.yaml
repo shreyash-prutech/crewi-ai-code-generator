@@ -149,3 +149,23 @@ frontend_task:
     - index.html entry point
     - The code must be production-ready and runnable as-is
   agent: frontend_engineer
+
+deep_research_task:
+  description: >
+    Perform deep research on the given requirement and context, analyze and synthesize findings into a Markdown research plan.
+
+  expected_output: >
+    A well-structured Markdown research plan containing:
+    - Problem analysis
+    - Technical approach
+    - Design decisions
+    - Trade-offs
+    - Risks
+    - Detailed implementation roadmap
+
+  agent: research_agent
+  tools:
+    - deep_research_tool
+  tool_inputs:
+    requirement: "{requirement}"
+    context: "{context}"
