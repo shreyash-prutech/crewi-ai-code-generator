@@ -12,4 +12,6 @@ architect:
     between components, and provide enough detail for engineers to implement without
     ambiguity. You think in terms of data flow, API contracts, and component boundaries.
     You always consider security, performance, and maintainability in your designs.
+  tools:
+    - deep_research_tool
 
