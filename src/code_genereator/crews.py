@@ -16,6 +16,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
 from code_genereator.tools.file_write_tool import FileWriteTool
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 
 # Load environment variables from .env file
 load_dotenv()
@@ -54,6 +55,29 @@ class PlanningCrew:
             llm=LLM(model=MODEL),
             reasoning=True,
             max_reasoning_attempts=3,
+        )
+
+    def deep_researcher(self) -> Agent:
+        """
+        Deep Research agent - gathers context, analyzes gaps, and produces a research plan.
+        """
+        return Agent(
+            config=self.agents_config["deep_researcher"],  # type: ignore[index]
+            verbose=True,
+            llm=LLM(model=MODEL),
+            tools=[DeepResearchTool()],
+            reasoning=True,
+            max_reasoning_attempts=3,
+        )
+
+    @task
+    def deep_research_task(self) -> Task:
+        """
+        Task to perform deep research and generate a research plan.
+        """
+        return Task(
+            config=self.tasks_config["deep_research_task"],  # type: ignore[index]
+            agent=self.deep_researcher(),
         )
 
     @task
