@@ -16,6 +16,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
 from code_genereator.tools.file_write_tool import FileWriteTool
+from code_genereator.tools.deep_research_tool import DeepResearchTool
 
 # Load environment variables from .env file
 load_dotenv()
@@ -52,6 +53,7 @@ class PlanningCrew:
             config=self.agents_config["architect"],  # type: ignore[index]
             verbose=True,
             llm=LLM(model=MODEL),
+            tools=[DeepResearchTool()],
             reasoning=True,
             max_reasoning_attempts=3,
         )
@@ -63,6 +65,7 @@ class PlanningCrew:
         """
         return Task(
             config=self.tasks_config["planning_task"],  # type: ignore[index]
+            tools=[DeepResearchTool()],
         )
 
     @crew
