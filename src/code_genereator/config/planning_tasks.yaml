@@ -1,10 +1,23 @@
 planning_task:
   description: >
-    Analyze the following software requirement and create a comprehensive technical specification:
+    Analyze the following software requirement and create a comprehensive planning artifact for the engineering team.
+    
+    First, call the deep_research_tool using the requirement as the topic and gather any available plan context, memory, or additional notes.
+    Use the returned Markdown research plan as the basis for your final technical specification.
     
     REQUIREMENT:
     {requirement}
     
+    The deep research output MUST include these sections:
+    - Problem Analysis
+    - Technical Approach
+    - Design Decisions
+    - Trade-offs
+    - Risks
+    - Assumptions
+    - Implementation Roadmap
+    
+    Then produce a final specification that stays focused on planning and design, not code implementation.
     Your specification MUST include:
     
     1. PROJECT OVERVIEW
@@ -36,14 +49,17 @@ planning_task:
        - Frontend: PascalCase for components, camelCase for functions
     
     Format your output as a structured JSON-like specification that can be parsed
-    and used by the engineering team.
+    and used by the engineering team, informed by the research plan rather than implementation details.
     
   expected_output: >
     A detailed technical specification in JSON-like format containing:
     - Project metadata
+    - Research plan summary grounded in the deep research Markdown output
+    - Problem analysis, technical approach, design decisions, trade-offs, risks, assumptions, and implementation roadmap
     - Database schema definitions
     - API endpoint specifications
     - Frontend component hierarchy
     - Clear naming conventions used consistently throughout
+    - No code implementation; planning/design only
   agent: architect
 
