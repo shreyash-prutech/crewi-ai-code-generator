@@ -43,11 +43,84 @@ database_task:
 
 backend_task:
   description: >
-    Based on the technical specification and database context, implement a complete, 
-    production-ready backend API.
+    Based on the technical specification and database context, implement a complete,
+    production-ready backend API that specifically delivers POST /api/v2/orders with
+    idempotency keyed by the Idempotency-Key request header and the client_request_id
+    field in the request body.
 
     TECHNICAL SPECIFICATION:
     {plan}
+
+    DATABASE CONTEXT:
+    Reference the database models from the previous task when building your API.
+
+    REQUIREMENTS:
+
+    1. Analyze the specification to identify all API endpoints, request/response
+       contracts, validation rules, and business logic requirements for order submission.
+
+    2. Implement POST /api/v2/orders with the following concrete behavior:
+       - Require the Idempotency-Key header and validate it as a UUID v4.
+       - Return HTTP 400 when Idempotency-Key is missing or invalid.
+       - Require client_request_id in the request payload and use it as part of the
+         idempotency/business key validation.
+       - On first successful submission, persist the full original response body and
+         status so later replays can return the exact same payload.
+       - If the same Idempotency-Key is replayed within 24 hours and the payload matches,
+         return HTTP 200 with the original response body and include
+         X-Idempotent-Replay: true.
+       - If the same key is reused within 24 hours with a conflicting payload, return
+         HTTP 409 with payload diff details that make the conflict understandable.
+       - Store idempotency state in PostgreSQL in a table named idempotency_records.
+       - Include a cleanup job or query pattern that removes idempotency records older
+         than 24 hours to satisfy the TTL requirement.
+
+    3. Create request and response schemas for order submission, including validation
+       for all fields needed to support idempotency, replay detection, and conflict
+       reporting.
+
+    4. Build the order submission business logic so that persisted original response
+       bodies can be returned verbatim on replay, and ensure the database layer is used
+       consistently for write, replay, and conflict paths.
+
+    5. Create a complete API application with:
+       - Main application entry point with proper configuration
+       - All necessary routes and endpoints
+       - Request/response data models with validation
+       - Proper error handling and HTTP status codes
+       - CORS configuration for frontend integration
+
+    6. Implement authentication if required:
+       - Secure password handling
+       - Token-based authentication
+       - Protected route mechanisms
+
+    7. Create proper project structure:
+       - Organize code into logical modules
+       - Separate concerns (routes, schemas, services, auth)
+       - Include configuration management
+
+    8. CRITICAL: Generate a requirements.txt file by analyzing ALL imports in your code.
+       Include every package needed to run the backend with appropriate versions,
+       especially the PostgreSQL driver, web framework, validation library, and any
+       UUID or diff utilities used by the generated code.
+       Don't forget runtime dependencies like the web server.
+
+    9. Create an environment configuration template (.env.example) with all
+       required environment variables documented.
+
+    The output must be complete and runnable with a single command after installing dependencies.
+
+  expected_output: >
+    Complete, self-contained backend implementation with:
+    - Main application file ready to run
+    - All route handlers and endpoints
+    - Data validation schemas
+    - Authentication system (if needed)
+    - requirements.txt with ALL Python dependencies
+    - .env.example with all configuration variables
+    - The code must be production-ready and runnable as-is
+  agent: backend_engineer
 
     DATABASE CONTEXT:
     Reference the database models from the previous task when building your API.
