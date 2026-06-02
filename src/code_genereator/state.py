@@ -61,6 +61,16 @@ class DevelopmentState(BaseModel):
     )
     
     # Metadata
+    order_endpoint_spec: str = Field(
+        default="",
+        description="Exact requirements for POST /api/v2/orders, including contract and behavior"
+    )
+    
+    idempotency_policy: str = Field(
+        default="",
+        description="Idempotency requirements and replay/conflict handling for the order endpoint"
+    )
+    
     project_name: Optional[str] = Field(
         default=None,
         description="Extracted project name from the requirement"
