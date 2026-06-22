@@ -1,49 +1,32 @@
 planning_task:
   description: >
-    Analyze the following software requirement and create a comprehensive technical specification:
-    
-    REQUIREMENT:
-    {requirement}
-    
-    Your specification MUST include:
-    
-    1. PROJECT OVERVIEW
-       - Project name and description
-       - Core features and scope
-       - Technology stack recommendations
-    
-    2. DATABASE DESIGN
-       - Entity definitions with fields and types
-       - Relationships between entities
-       - Indexes and constraints
-       - Sample table names following naming conventions
-    
-    3. API DESIGN
-       - RESTful endpoints with HTTP methods
-       - Request/Response schemas
-       - Authentication requirements
-       - Error handling patterns
-    
-    4. FRONTEND DESIGN
-       - Page/Component structure
-       - State management approach
-       - API integration points
-       - UI/UX considerations
-    
-    5. NAMING CONVENTIONS
-       - Database: snake_case for tables/columns
-       - Backend: PascalCase for classes, camelCase for functions
-       - Frontend: PascalCase for components, camelCase for functions
-    
-    Format your output as a structured JSON-like specification that can be parsed
-    and used by the engineering team.
-    
-  expected_output: >
-    A detailed technical specification in JSON-like format containing:
-    - Project metadata
-    - Database schema definitions
-    - API endpoint specifications
-    - Frontend component hierarchy
-    - Clear naming conventions used consistently throughout
-  agent: architect
+    Analyze the user's software requirement and create a comprehensive technical
+    specification for the engineering crew. The specification should include the
+    system architecture, data model, backend API design, frontend requirements,
+    integration points, implementation plan, and key risks.
 
+    User requirement:
+    {requirement}
+  expected_output: >
+    A detailed JSON-like technical specification that the engineering crew can
+    use to implement the complete software project.
+  agent: architect
+  async_execution: true
+
+technical_feasibility_research_task:
+  description: >
+    Research the technical feasibility of the user's software requirement to
+    support planning. Evaluate implementation complexity, technology constraints,
+    dependency risks, integration concerns, scalability considerations, security
+    implications, and any areas requiring validation before engineering begins.
+    This task is intended to run in parallel with planning_task rather than as a
+    sequential follow-up.
+
+    User requirement:
+    {requirement}
+  expected_output: >
+    A technical feasibility research report summarizing feasible implementation
+    approaches, major risks, constraints, recommended technologies, assumptions,
+    and planning considerations.
+  agent: Deepresarch
+  async_execution: true
