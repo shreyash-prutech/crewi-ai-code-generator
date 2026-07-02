@@ -8,8 +8,9 @@ software development pipeline using CrewAI Flows.
 The flow progresses through these stages:
 1. Initialization - Sets up the development state with requirements
 2. Planning - Architect creates technical specification
-3. Engineering - Database, Backend, Frontend agents implement code
-4. Judging - Final validation and integration
+3. Deep Research - Research stage gathers implementation context before code generation
+4. Engineering - Database, Backend, Frontend agents implement code
+5. Judging - Final validation and integration
 """
 
 import sys
@@ -68,7 +69,15 @@ def save_execution_log(state: DevelopmentState, log_dir: str = "dist/logs"):
 
 ---
 
-## PHASE 2: Engineering Crew Output
+## PHASE 2: Deep Research Output
+
+### Research Notes
+
+{getattr(state, 'research_notes', '')}
+
+---
+
+## PHASE 3: Engineering Crew Output
 
 ###  Database Engineer Output
 
@@ -94,7 +103,7 @@ def save_execution_log(state: DevelopmentState, log_dir: str = "dist/logs"):
 
 ---
 
-## PHASE 3: Judge Crew Output
+## PHASE 4: Judge Crew Output
 
 ### Final Validation Report
 
@@ -129,8 +138,9 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
     """
     Main orchestration flow for the Agentic Software Factory.
     
-    This flow coordinates three specialized crews:
+    This flow coordinates the existing CrewAI pipeline stages:
     - PlanningCrew: Generates technical specifications
+    - Deep research stage: Produces research output that is consumed before engineering
     - EngineeringCrew: Implements database, backend, and frontend
     - JudgeCrew: Validates and integrates all components
     """
@@ -191,7 +201,7 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         3. Frontend Engineer - Creates UI (uses Backend context)
         """
         print("\n" + "=" * 60)
-        print("PHASE 2: ENGINEERING")
+        print("PHASE 3: ENGINEERING")
         print("=" * 60)
         print("Engineering team is implementing the code...")
         
@@ -233,7 +243,7 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         validates naming consistency, and produces the final report.
         """
         print("\n" + "=" * 60)
-        print("PHASE 3: VALIDATION")
+        print("PHASE 4: VALIDATION")
         print("=" * 60)
         print("Judge is auditing the integration...")
         
