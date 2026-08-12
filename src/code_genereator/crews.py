@@ -16,6 +16,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
 from code_genereator.tools.file_write_tool import FileWriteTool
+from code_genereator.tools.research_tool import ResearchTool
 
 # Load environment variables from .env file
 load_dotenv()
@@ -56,6 +57,21 @@ class PlanningCrew:
             max_reasoning_attempts=3,
         )
 
+    @agent
+    def deepresarch(self) -> Agent:
+        """
+        The Deepresarch agent - performs focused research for planning.
+        Uses ResearchTool to gather supporting context for technical specs.
+        """
+        return Agent(
+            config=self.agents_config["deepresarch"],  # type: ignore[index]
+            verbose=True,
+            llm=LLM(model=MODEL),
+            tools=[ResearchTool()],
+            reasoning=True,
+            max_reasoning_attempts=3,
+        )
+
     @task
     def planning_task(self) -> Task:
         """
@@ -69,7 +85,7 @@ class PlanningCrew:
     def crew(self) -> Crew:
         """Creates the Planning Crew"""
         return Crew(
-            agents=self.agents,
+            agents=[self.architect(), self.deepresarch()],
             tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
