@@ -150,7 +150,7 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print("=" * 60)
         print(f"\nRequirement: {self.state.requirement[:100]}...")
         print("\n" + "-" * 60)
-        
+
         self.state.status = "initialized"
         return self.state
     
@@ -166,13 +166,33 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print("PHASE 1: PLANNING")
         print("=" * 60)
         print("Architect is designing the system specification...")
-        
+
         planning_crew = PlanningCrew()
         result = planning_crew.crew().kickoff(
-            inputs={"requirement": self.state.requirement}
+            inputs={
+                "requirement": self.state.requirement,
+                "issue_text": self.state.requirement,
+            }
         )
-        
-        self.state.plan = str(result.raw) if hasattr(result, 'raw') else str(result)
+
+        if hasattr(result, 'tasks_output') and result.tasks_output:
+            tasks_output = result.tasks_output
+            if len(tasks_output) >= 1:
+                self.state.plan = str(tasks_output[0].raw) if hasattr(tasks_output[0], 'raw') else str(tasks_output[0])
+            if len(tasks_output) >= 2:
+                self.state.order_endpoint_spec = str(tasks_output[1].raw) if hasattr(tasks_output[1], 'raw') else str(tasks_output[1])
+            if len(tasks_output) >= 3:
+                self.state.idempotency_policy = str(tasks_output[2].raw) if hasattr(tasks_output[2], 'raw') else str(tasks_output[2])
+        else:
+            full_output = str(result.raw) if hasattr(result, 'raw') else str(result)
+            self.state.plan = full_output
+            self.state.order_endpoint_spec = full_output
+
+        if not self.state.order_endpoint_spec:
+            self.state.order_endpoint_spec = self.state.plan
+        if not self.state.idempotency_policy:
+            self.state.idempotency_policy = self.state.order_endpoint_spec
+
         self.state.status = "planned"
         
         print("\n✅ Planning complete! Technical spec generated.")
@@ -194,12 +214,17 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print("PHASE 2: ENGINEERING")
         print("=" * 60)
         print("Engineering team is implementing the code...")
-        
+
         engineering_crew = EngineeringCrew()
         result = engineering_crew.crew().kickoff(
-            inputs={"plan": self.state.plan}
+            inputs={
+                "plan": self.state.plan,
+                "order_endpoint_spec": self.state.order_endpoint_spec,
+                "idempotency_policy": self.state.idempotency_policy,
+                "requirement": self.state.requirement,
+            }
         )
-        
+
         # Parse task outputs from the crew result
         # The sequential crew returns results from all tasks
         if hasattr(result, 'tasks_output') and result.tasks_output:
@@ -236,21 +261,23 @@ class SoftwareDevFlow(Flow[DevelopmentState]):
         print("PHASE 3: VALIDATION")
         print("=" * 60)
         print("Judge is auditing the integration...")
-        
+
         judge_crew = JudgeCrew()
         result = judge_crew.crew().kickoff(
             inputs={
                 "requirement": self.state.requirement,
                 "plan": self.state.plan,
+                "order_endpoint_spec": self.state.order_endpoint_spec,
+                "idempotency_policy": self.state.idempotency_policy,
                 "database_code": self.state.database_code,
                 "backend_code": self.state.backend_code,
                 "frontend_code": self.state.frontend_code,
             }
         )
-        
+
         self.state.final_report = str(result.raw) if hasattr(result, 'raw') else str(result)
         self.state.status = "completed"
-        
+
         print("\nValidation complete! Final report generated.")
         print("=" * 60)
         print("SOFTWARE FACTORY COMPLETE!")
