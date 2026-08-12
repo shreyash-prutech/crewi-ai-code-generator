@@ -47,3 +47,29 @@ planning_task:
     - Clear naming conventions used consistently throughout
   agent: architect
 
+deep_research_task:
+  description: >
+    Perform deep research on the provided topic and context. Gather relevant context and memories,
+    analyze and reason over them iteratively, identify gaps or assumptions, and synthesize findings
+    before generating code. Produce a comprehensive Markdown research plan.
+
+    TOPIC:
+    {topic}
+
+    CONTEXT:
+    {context}
+
+    ITERATIONS:
+    {iterations}
+
+    Your research plan MUST include:
+    1. Problem analysis
+    2. Technical approach
+    3. Design decisions
+    4. Trade-offs and risks
+    5. Detailed implementation roadmap
+  expected_output: >
+    A well-structured Markdown research plan (.md) that includes problem analysis, technical approach,
+    design decisions, trade-offs, risks, and a detailed implementation roadmap.
+  agent: deep_researcher
+
