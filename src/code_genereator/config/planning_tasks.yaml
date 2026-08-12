@@ -1,49 +1,32 @@
 planning_task:
   description: >
-    Analyze the following software requirement and create a comprehensive technical specification:
+    Perform deep research on the following software requirement before drafting
+    any implementation guidance.
     
     REQUIREMENT:
     {requirement}
     
-    Your specification MUST include:
+    Follow a structured research process:
+    1. Gather all relevant context, notes, and memories available for the requirement.
+    2. Analyze the problem iteratively and reason over the evidence.
+    3. Identify gaps, ambiguities, constraints, and assumptions.
+    4. Synthesize the findings into a clear Markdown research plan.
     
-    1. PROJECT OVERVIEW
-       - Project name and description
-       - Core features and scope
-       - Technology stack recommendations
+    Your output MUST be a .md document and MUST include the following sections:
+    - Problem analysis
+    - Technical approach
+    - Design decisions
+    - Trade-offs
+    - Risks
+    - Assumptions/Gaps
+    - Detailed implementation roadmap
     
-    2. DATABASE DESIGN
-       - Entity definitions with fields and types
-       - Relationships between entities
-       - Indexes and constraints
-       - Sample table names following naming conventions
-    
-    3. API DESIGN
-       - RESTful endpoints with HTTP methods
-       - Request/Response schemas
-       - Authentication requirements
-       - Error handling patterns
-    
-    4. FRONTEND DESIGN
-       - Page/Component structure
-       - State management approach
-       - API integration points
-       - UI/UX considerations
-    
-    5. NAMING CONVENTIONS
-       - Database: snake_case for tables/columns
-       - Backend: PascalCase for classes, camelCase for functions
-       - Frontend: PascalCase for components, camelCase for functions
-    
-    Format your output as a structured JSON-like specification that can be parsed
-    and used by the engineering team.
+    Write the document so it can be reviewed and used as the foundation for
+    downstream code generation.
     
   expected_output: >
-    A detailed technical specification in JSON-like format containing:
-    - Project metadata
-    - Database schema definitions
-    - API endpoint specifications
-    - Frontend component hierarchy
-    - Clear naming conventions used consistently throughout
+    A well-structured Markdown (.md) research plan anchored to {requirement},
+    containing the required sections for analysis, synthesis, and implementation
+    planning.
   agent: architect
 
